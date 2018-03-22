@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Search for a Github User's Repositories:</title>
+<title>Search for a GitHub User's Repositories:</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <style type="text/css">
 * {
@@ -118,7 +118,7 @@ function searchUser() {
   	}
   	else {
   		jQuery("#results").append(listOfResults);
-  		jQuery("#results").prepend("<p class=\"resultsTitle\">Github Repositories for " + getUserName + "</p>");
+  		jQuery("#results").prepend("<p class=\"resultsTitle\">GitHub Repositories for " + getUserName + "</p>");
   	}
     jQuery("#results").show();
   })
@@ -138,8 +138,8 @@ function searchUser() {
 
 <body>
 <form class="userSearchForm">
-  <p>Search for a Github User's Repositories:</p>
-  <input type="text" placeholder="Enter Github Username" name="username"/>
+  <p>Search for a GitHub User's Repositories:</p>
+  <input type="text" placeholder="Enter GitHub Username" name="username"/>
   <button type="button" onClick="searchUser();">Search</button>
 </form>
 <ul id="results"></ul>
