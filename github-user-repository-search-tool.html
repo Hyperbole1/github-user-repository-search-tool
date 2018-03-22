@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Search for a Github User's Repositories:</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<style type="text/css">
+* {
+    font-family: arial,sans-serif;
+    color: #333333;
+}
+body {
+	margin:0;
+	padding:0;
+	background-color:cornflowerblue;
+}
+#results {
+    list-style-type: none;
+    margin: 0 auto;
+    padding-left:20px;
+	padding-right:20px;
+    padding-top: 20px;
+    padding-bottom:20px;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 300px;
+    background-color:#FFFFFF;
+    display:none;
+}
+#results li {
+    margin-bottom: 8px;
+}
+#results li a {
+    font-size: 16px;
+    line-height: 16px;
+    text-decoration:none;
+    font-weight:normal;
+    word-wrap:break-word;
+}
+#results li a:hover {
+    text-decoration:underline;
+    font-weight:bold;
+}
+p.resultsTitle {
+	margin:0;
+	padding:0;
+	margin-bottom:20px;
+	font-weight:bold;
+}
+form.userSearchForm {
+    background-color: #333333;
+    padding: 20px;
+    width: 100%;
+    max-width: 300px;
+    margin:0 auto;
+    margin-top:30px;
+}
+form.userSearchForm p {
+	color:#FFFFFF;
+	margin:0;
+	padding:0;
+	margin-bottom:20px;
+}
+form.userSearchForm input {
+ 	display:inline-block;
+	width:65%;
+	height:30px;
+	border:0;
+	background-color:#FFFFFF;
+	color:#333333;
+	font-size:16px;
+	line-height:16px;
+	padding-left:10px;
+	padding-right:10px;
+	padding-top:0;
+	padding-bottom:0;
+}
+form.userSearchForm button {
+	display:inline-block;
+	width:25%;
+	height:30px;
+	border:0;
+	background-color:cornflowerblue;
+	color:#FFFFFF;
+	font-size:16px;
+	line-height:16px;
+	font-weight:bold;
+	cursor:pointer;
+	text-align:center;
+	float:right;
+}
+</style>
+<script type="text/javascript">
+function searchUser() {
+  jQuery("#results").hide();
+  var gitHubPrefix = "https://github.com/";
+  var assembleGitUrl = "https://api.github.com/users/";
+  var getUserName = jQuery("input[name='username']").val();
+  if (getUserName === "" || getUserName === null || getUserName === undefined) {
+    jQuery("input[name='username']").focus();
+  	return false;
+  }
+  assembleGitUrl += getUserName;
+  assembleGitUrl += "/repos";
+  var listOfResults = "";
+  var testFullName = "";
+  // clear results
+  jQuery("#results").html("");
+  
+  var jqGetJSON = jQuery.getJSON( assembleGitUrl, function(response) {
+   	for (i = 0; i < response.length; i++) {
+    	testFullName = response[i].full_name;
+       	listOfResults += "<li><a href=\"" + gitHubPrefix + testFullName + "\" target=\"_blank\">" + testFullName + "</a></li>";
+   	}
+    
+    if (listOfResults === "" || listOfResults === null || listOfResults === undefined) {
+    	jQuery("#results").append("There are no repositories for this user.");
+  	}
+  	else {
+  		jQuery("#results").append(listOfResults);
+  		jQuery("#results").prepend("<p class=\"resultsTitle\">Github Repositories for " + getUserName + "</p>");
+  	}
+    jQuery("#results").show();
+  })
+  .done(function() {
+    console.log( "second success" );
+  })
+  .fail(function() {
+    jQuery("#results").append("There was an error in processing your request.");
+  })
+  .always(function() {
+    console.log( "complete" );
+  });
+  
+}
+</script>
+</head>
+
+<body>
+<form class="userSearchForm">
+  <p>Search for a Github User's Repositories:</p>
+  <input type="text" placeholder="Enter Github Username" name="username"/>
+  <button type="button" onClick="searchUser();">Search</button>
+</form>
+<ul id="results"></ul>
+</body>
+</html>
